@@ -12,6 +12,8 @@ protocol FieldValidator {
     
     func validateLoginTextFields(loginTF: UITextField, passwordTF: UITextField) -> Bool
     
+    func asyncvalidateLoginTextFields(loginTF: UITextField, passwordTF: UITextField, completion: @escaping (Bool) -> Void)
+
 }
 
 class FieldValidatorImpl: FieldValidator {
@@ -19,5 +21,14 @@ class FieldValidatorImpl: FieldValidator {
     func validateLoginTextFields(loginTF: UITextField, passwordTF: UITextField) -> Bool {
         
         return loginTF.hasText && passwordTF.hasText && passwordTF.text == "password123"
+    }
+    
+    func asyncvalidateLoginTextFields(loginTF: UITextField, passwordTF: UITextField, completion: @escaping (Bool) -> Void) {
+        
+        DispatchQueue.global(qos: .background).async {
+            let result = loginTF.hasText && passwordTF.hasText && passwordTF.text == "password123"
+            
+            completion(result)
+        }
     }
 }
