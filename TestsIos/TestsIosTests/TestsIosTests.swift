@@ -40,6 +40,7 @@ class TestsIosTests: XCTestCase {
     func testValidatorCorrectWithValues() throws {
         
         //Given
+        
         let loginTf = UITextField()
         loginTf.text = "login"
         let passwordTf = UITextField()
@@ -49,19 +50,48 @@ class TestsIosTests: XCTestCase {
         var validateResult: Bool
         
         //When
+        
         validateResult = fieldValidator.validateLoginTextFields(loginTF: loginTf, passwordTF: passwordTf)
 
         //Then
+        
         XCTAssertEqual(expectedResult, validateResult)
     }
     
-    
-
-    func testPerformanceExample() throws {
-
-        measure {
+    func testAsyncValidatorCorrectWithValues() throws {
+        
+        //Given
+        
+        let loginTf = UITextField()
+        loginTf.text = "login"
+        let passwordTf = UITextField()
+        passwordTf.text = "password"
+        
+        let expectedResult = false
+        var validateResult: Bool?
+        let validatorExpectation = expectation(description: "Expectation in " + #function)
+        
+        
+        //When
+        
+        fieldValidator.asyncvalidateLoginTextFields(loginTF: loginTf, passwordTF: passwordTf) { (isValid) in
+            
+            validateResult = isValid
+                        
+            validatorExpectation.fulfill()
 
         }
-    }
 
+        //Then
+        
+        waitForExpectations(timeout: 2.0) { (error) in
+            
+            if error != nil {
+                XCTFail()
+            }
+            
+            XCTAssertEqual(expectedResult, validateResult)
+        }
+    }
 }
+ 

@@ -25,10 +25,13 @@ class FieldValidatorImpl: FieldValidator {
     
     func asyncvalidateLoginTextFields(loginTF: UITextField, passwordTF: UITextField, completion: @escaping (Bool) -> Void) {
         
-        DispatchQueue.global(qos: .background).async {
-            let result = loginTF.hasText && passwordTF.hasText && passwordTF.text == "password123"
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 1.5, execute: {
             
-            completion(result)
-        }
+            DispatchQueue.main.async {
+                let result = loginTF.hasText && passwordTF.hasText && passwordTF.text == "password123"
+                
+                completion(result)
+            }
+        })
     }
 }
