@@ -19,11 +19,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginTF.returnKeyType = .continue
+        loginTF.returnKeyType = .next
         passwordTF.returnKeyType = .done
         
         loginTF.delegate = self
         passwordTF.delegate = self
+        
+        loginTF.accessibilityIdentifier = "LoginTF"
+        passwordTF.accessibilityIdentifier = "PasswordTF"
+
     }
     
     //MARK: - UITextFieldDelegate
@@ -39,7 +43,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             guard fieldValidator.validateLoginTextFields(loginTF: loginTF, passwordTF: passwordTF) else {
                 
                 let alert = UIAlertController(title: "Warning", message: "Invalid Fields", preferredStyle: .alert)
-                
+                                
                 let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
                 alert.addAction(okAction)
                 
